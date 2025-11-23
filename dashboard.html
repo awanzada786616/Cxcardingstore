@@ -1,120 +1,224 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ur">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wajid Carding Store</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>high end store</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    :root{
+      --frame-size: 18px; /* frame thickness */
+      --image-max-width: 720px;
+      --bg: #0b0b0b;
+      --card-radius: 18px;
     }
 
-    header {
-      background: #4CAF50;
-      width: 100%;
-      padding: 20px;
-      text-align: center;
-      color: white;
-      font-size: 24px;
-      font-weight: bold;
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,0.03), transparent),
+                  linear-gradient(180deg, #070707 0%, #0f0f12 100%);
+      color:#fff;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      padding:40px;
+      box-sizing:border-box;
     }
 
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin: 30px;
-      width: 90%;
-      max-width: 1000px;
+    .container{
+      width:100%;
+      max-width: calc(var(--image-max-width) + 120px);
+      text-align:center;
     }
 
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
-      padding: 20px;
-      text-align: center;
-      transition: transform 0.2s;
+    h1{
+      margin:0 0 18px 0;
+      font-size:28px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      color: #f7f7f7;
     }
 
-    .card:hover {
-      transform: scale(1.05);
+    .frame {
+      display:inline-block;
+      padding: calc(var(--frame-size) + 6px);
+      border-radius: calc(var(--card-radius) + var(--frame-size));
+      /* animated gradient frame */
+      background: conic-gradient(from 0deg, #ff0047, #ff7a00, #ffd500, #00d084, #00b4ff, #6a00ff, #ff0047);
+      /* make the gradient bleed outside the inner image using mask */
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: spin-hue 8s linear infinite;
+      transition: filter .25s ease;
     }
 
-    .card img {
-      width: 120px;
-      height: auto;
-      margin-bottom: 15px;
+    /* inner wrapper to create space between gradient border & content */
+    .frame .inner{
+      display:block;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.35));
+      border-radius: calc(var(--card-radius));
+      padding:8px;
+      backdrop-filter: blur(6px) saturate(110%);
+      box-shadow: 0 8px 30px rgba(2,2,8,0.7), inset 0 -6px 18px rgba(0,0,0,0.45);
     }
 
-    .card h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
-      color: #333;
+    /* the image itself */
+    .product{
+      display:block;
+      width:100%;
+      max-width: var(--image-max-width);
+      height:auto;
+      border-radius: calc(var(--card-radius - 4px));
+      box-shadow: 0 18px 40px rgba(2,2,8,0.6);
+      display:block;
+      object-fit:cover;
     }
 
-    .card p {
-      font-size: 16px;
-      color: #555;
-      margin-bottom: 15px;
+    /* slow hue rotation for the frame - gives color-changing effect */
+    @keyframes spin-hue {
+      0%   { transform: rotate(0deg)   translateZ(0); filter: hue-rotate(0deg); }
+      50%  { transform: rotate(180deg) translateZ(0); filter: hue-rotate(180deg); }
+      100% { transform: rotate(360deg) translateZ(0); filter: hue-rotate(360deg); }
     }
 
-    .card button {
-      padding: 10px 15px;
-      background: #4CAF50;
+    /* pause animation on hover for a calmer look */
+    .frame:hover{ animation-play-state: paused; filter: contrast(1.05) saturate(1.1); }
+
+    .controls {
+      margin-top:18px;
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    input[type="text"]{
+      min-width:260px;
+      max-width:420px;
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      color: #fff;
+      outline:none;
+      font-size:14px;
+    }
+
+    button{
+      padding:10px 14px;
+      border-radius:10px;
       border: none;
-      color: white;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
+      cursor:pointer;
+      background: linear-gradient(180deg,#ffffff10,#ffffff06);
+      color:#fff;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+      font-weight:600;
     }
 
-    .card button:hover {
-      background: #45a049;
+    button:active{ transform: translateY(1px); }
+
+    .audio-wrap{
+      margin-top:12px;
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      align-items:center;
+    }
+
+    .note{
+      margin-top:12px;
+      font-size:13px;
+      color: #cfcfcf;
+      opacity:0.85;
+    }
+
+    /* responsive tweaks */
+    @media (max-width:640px){
+      h1{ font-size:20px; }
+      :root{ --image-max-width: 360px; --frame-size:14px; }
+      input[type="text"]{ min-width:180px; }
     }
   </style>
 </head>
 <body>
-  <header>
-    Wajid carding store pk
-  </header>
+  <div class="container" role="main">
+    <h1>high end store</h1>
 
-  <div class="container">
-    <div class="card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/PUBG_Mobile_logo.png" alt="UC Pack">
-      <h2>5000 UC Pack</h2>
-      <p>Only 1500 PKR</p>
-      <button onclick="window.open('https://tiktok.com','_blank')">Buy Now</button>
+    <!-- FRAME + IMAGE -->
+    <div class="frame" aria-hidden="false">
+      <div class="inner">
+        <!-- image from the link you provided -->
+        <img
+          class="product"
+          src="https://i.postimg.cc/nc7YGhRN/images-(1).webp"
+          alt="Product image for high end store"
+        />
+      </div>
     </div>
 
-    <div class="card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/PUBG_Mobile_logo.png" alt="UC Pack">
-      <h2>10000 UC Pack</h2>
-      <p>Only 3200 PKR</p>
-      <button onclick="window.open('https://tiktok.com','_blank')">Buy Now</button>
+    <!-- audio controls area: paste your direct audio link into the textbox and click Set song -->
+    <div class="controls" aria-label="Audio controls">
+      <input id="songUrl" type="text" placeholder="Yahan apni direct audio URL paste karein (mp3/ogg direct link)" />
+      <button id="setSong">Set song</button>
+      <button id="playPause">Play / Pause</button>
     </div>
 
-    <div class="card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/PUBG_Mobile_logo.png" alt="UC Pack">
-      <h2>50000 UC Pack</h2>
-      <p>Only 7000 PKR</p>
-      <button onclick="window.open('https://tiktok.com','_blank')">Buy Now</button>
+    <div class="audio-wrap" aria-hidden="false">
+      <!-- audio element. starts empty; user will set src via input+button -->
+      <audio id="player" controls preload="none"></audio>
     </div>
 
-    <div class="card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/PUBG_Mobile_logo.png" alt="UC Pack">
-      <h2>100000 UC Pack</h2>
-      <p>Only 17000 PKR</p>
-      <button onclick="window.open('https://tiktok.com','_blank')">Buy Now</button>
+    <div class="note">
+      Tip: Agar aap chahte hain ke audio automatically load ho jab page khule, to input mein direct file link paste kar ke <strong>Set song</strong> dabayein. (Autoplay browsers ki settings ki wajah se blocked ho sakta hai.)
     </div>
   </div>
+
+  <script>
+    // JavaScript to let user paste a direct link and control the audio
+    const setBtn = document.getElementById('setSong');
+    const playBtn = document.getElementById('playPause');
+    const player = document.getElementById('player');
+    const input = document.getElementById('songUrl');
+
+    setBtn.addEventListener('click', () => {
+      const url = input.value.trim();
+      if (!url) {
+        alert('Pehle apni direct audio link paste karein.');
+        return;
+      }
+      // basic validation: should look like a URL
+      try {
+        new URL(url);
+      } catch(e) {
+        alert('Yeh valid URL nahin lagta. Direct audio file link hona chahiye (mp3/ogg).');
+        return;
+      }
+      player.src = url;
+      player.load();
+      // try to play (may be blocked by browser policies)
+      player.play().catch(()=>{/* ignore autoplay block */});
+      alert('Song set ho gaya. Agar play nahin hua toh "Play / Pause" button dabayein.');
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (!player.src) {
+        alert('Koi song set nahin hai. Pehle link paste karke "Set song" karein.');
+        return;
+      }
+      if (player.paused) player.play().catch(()=>{ alert('Play blocked by browser — click inside the page or use controls.'); });
+      else player.pause();
+    });
+
+    // allow pressing Enter in input to set song
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') setBtn.click();
+    });
+  </script>
 </body>
 </html>
